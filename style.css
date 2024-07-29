@@ -1,0 +1,64 @@
+html {
+    font-family: 'Inter' !important;
+}
+
+.image-label {
+    border: black solid 1px;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    background-color: black;
+    
+    position: absolute;
+    right: 0;
+}
+
+.image-label:hover {
+    background-color: grey;
+}
+
+.image-input {
+    display: none;
+}
+
+.preview-container {
+    width: 1000px;
+    height: 700px;
+    border: black solid 1px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-canvas {
+    display: none;
+}
+
+.dimensions-container {
+    display: none;
+}
+
+.result-canvas {
+    image-rendering: pixelated;
+    width: 500px;
+    height: auto;
+}
+
+.toolbar-container {
+    width: 1000px;
+    position: fixed;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.right-container {
+    margin-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
