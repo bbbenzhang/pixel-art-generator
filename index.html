@@ -15,11 +15,13 @@
         
                 <div class="toolbar-container">
                     <div id="dimensions" class="dimensions-container">
-                        <label for="width"> Width: </label>
-                        <input type="number" id="width" min="1" max="100" value="16"/>
-                        <label for="height"> Height: </label>
-                        <input type="number" id="height" min="1" max="100" value="16" />
-                        <button id="generate"> Generate </button>
+                        <label for="width" class="dimensions-item"> Width: </label>
+                        <input type="number" id="width" min="1" max="100" value="16" class="dimensions-input"/>
+                        <label for="height" class="dimensions-item"> Height: </label>
+                        <input type="number" id="height" min="1" max="100" value="16" class="dimensions-input"/>
+                        <input type="checkbox" id="monochrome" class="dimensions-item">
+                        <label for="monochrome"> Monochrome </label>
+                        <button id="generate" class="dimensions-item"> Generate </button>
                     </div>
                     <label class="image-label" for="image"> Choose an Image </label>
                     <input class="image-input" type="file" id="image" accept="image/png, image/jpeg" />

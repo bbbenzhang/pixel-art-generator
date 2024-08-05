@@ -8,9 +8,6 @@ html {
     padding: 5px;
     color: white;
     background-color: black;
-    
-    position: absolute;
-    right: 0;
 }
 
 .image-label:hover {
@@ -22,8 +19,8 @@ html {
 }
 
 .preview-container {
-    width: 1000px;
-    height: 700px;
+    width: 910px;
+    height: 610px;
     border: black solid 1px;
     border-radius: 5px;
     display: flex;
@@ -37,6 +34,16 @@ html {
 
 .dimensions-container {
     display: none;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dimensions-item {
+    margin-left: 10px;
+}
+
+.dimensions-input {
+    margin-left: 5px;
 }
 
 .result-canvas {
@@ -47,8 +54,10 @@ html {
 }
 
 .toolbar-container {
-    width: 1000px;
-    position: fixed;
+    width: 910px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .main-container {

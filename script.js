@@ -18,6 +18,8 @@ const link = document.getElementById('link');
 
 const resultContainer = document.getElementById('rightContainer')
 
+const monochrome = document.getElementById('monochrome');
+
 const MAX_WIDTH = 900;
 const MAX_HEIGHT = 600;
 
@@ -41,7 +43,7 @@ input.addEventListener('change', (event) => {
                 }
                 preview.innerHTML = '';
                 preview.appendChild(image);
-                dimensions.style.display = "contents";
+                dimensions.style.display = "flex";
                 resultContainer.style.display = "none";
             }
         };
@@ -114,11 +116,23 @@ generateButton.addEventListener('click', () => {
                     }
 
                 }
+
+                avg[0] = Math.floor(avg[0] / (widthStep * heightStep));
+                avg[1] = Math.floor(avg[1] / (widthStep * heightStep));
+                avg[2] = Math.floor(avg[2] / (widthStep * heightStep));
+                avg[3] = Math.floor(avg[3] / (widthStep * heightStep));
                 
-                temp.data[0] = Math.floor(avg[0] / (widthStep * heightStep));
-                temp.data[1] = Math.floor(avg[1] / (widthStep * heightStep));
-                temp.data[2] = Math.floor(avg[2] / (widthStep * heightStep));
-                temp.data[3] = Math.floor(avg[3] / (widthStep * heightStep));
+                if (monochrome.checked) {
+                    const result = Math.min(Math.pow((Math.pow(avg[0]/255.0,2.2)*0.2126+Math.pow(avg[1]/255.0,2.2)*0.7152+Math.pow(avg[2]/255.0,2.2)*0.0722),0.454545)*255);
+                    temp.data[0] = temp.data[1] = temp.data[2] = result;
+                    temp.data[3] = 255; //Math.floor(avg[3] / (widthStep * heightStep));
+                }
+                else {
+                    temp.data[0] = avg[0];
+                    temp.data[1] = avg[1];
+                    temp.data[2] = avg[2];
+                    temp.data[3] = avg[3];
+                }
 
                 resultCtx.putImageData(temp, i, j);
             }
