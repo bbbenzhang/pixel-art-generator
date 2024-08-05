@@ -13,6 +13,11 @@ const ctx = canvas.getContext('2d');
 const result = document.getElementById('resultCanvas');
 const resultCtx = result.getContext('2d');
 
+const download = document.getElementById("download");
+const link = document.getElementById('link');
+
+const resultContainer = document.getElementById('rightContainer')
+
 const MAX_WIDTH = 900;
 const MAX_HEIGHT = 600;
 
@@ -37,7 +42,7 @@ input.addEventListener('change', (event) => {
                 preview.innerHTML = '';
                 preview.appendChild(image);
                 dimensions.style.display = "contents";
-                result.style.display = "none";
+                resultContainer.style.display = "none";
             }
         };
         reader.readAsDataURL(file);
@@ -45,7 +50,7 @@ input.addEventListener('change', (event) => {
     else {
         preview.innerHTML = '';
         dimensions.style.display = "none";
-        result.style.display = "none";
+        resultContainer.style.display = "none";
     }
 });
 
@@ -119,10 +124,13 @@ generateButton.addEventListener('click', () => {
             }
         }
 
-        result.style.display = "block";
+        resultContainer.style.display = "flex";
     }
 })
 
-
-
+download.addEventListener('click', () => {
+    link.download = 'pixel_art.png';
+    link.href = result.toDataURL();
+    link.click();
+});
 

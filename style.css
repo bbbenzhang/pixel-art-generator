@@ -43,6 +43,7 @@ html {
     image-rendering: pixelated;
     width: 500px;
     height: auto;
+    margin-bottom: 50px;
 }
 
 .toolbar-container {
@@ -57,7 +58,8 @@ html {
 
 .right-container {
     margin-left: 100px;
-    display: flex;
+    display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
