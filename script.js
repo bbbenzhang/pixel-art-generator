@@ -19,6 +19,11 @@ const link = document.getElementById('link');
 const resultContainer = document.getElementById('rightContainer')
 
 const monochrome = document.getElementById('monochrome');
+const palette = document.getElementById('palette');
+const newColor = document.getElementById('new-color');
+const colors = document.getElementById('colors');
+const colorsContainer = document.getElementById('colors-container');
+const customColors = []
 
 const MAX_WIDTH = 900;
 const MAX_HEIGHT = 600;
@@ -45,6 +50,7 @@ input.addEventListener('change', (event) => {
                 preview.appendChild(image);
                 dimensions.style.display = "flex";
                 resultContainer.style.display = "none";
+                if (palette.checked) colorsContainer.style.display = 'flex';
             }
         };
         reader.readAsDataURL(file);
@@ -53,6 +59,7 @@ input.addEventListener('change', (event) => {
         preview.innerHTML = '';
         dimensions.style.display = "none";
         resultContainer.style.display = "none";
+        colorsContainer.style.display = 'none';
     }
 });
 
@@ -125,7 +132,23 @@ generateButton.addEventListener('click', () => {
                 if (monochrome.checked) {
                     const result = Math.min(Math.pow((Math.pow(avg[0]/255.0,2.2)*0.2126+Math.pow(avg[1]/255.0,2.2)*0.7152+Math.pow(avg[2]/255.0,2.2)*0.0722),0.454545)*255);
                     temp.data[0] = temp.data[1] = temp.data[2] = result;
-                    temp.data[3] = 255; //Math.floor(avg[3] / (widthStep * heightStep));
+                    temp.data[3] = 255; //avg[3];
+                }
+                else if (palette.checked && customColors.length > 0) {
+                    let closestColor = customColors[0];
+                    let closestDistance = distance(closestColor, avg);
+                    let cur = 0;
+                    for (let i = 1; i < customColors.length; i++) {
+                        cur = distance(customColors[i], avg);
+                        if (cur < closestDistance) {
+                            closestDistance = cur;
+                            closestColor = customColors[i];
+                        }
+                    }
+                    temp.data[0] = closestColor[0];
+                    temp.data[1] = closestColor[1];
+                    temp.data[2] = closestColor[2];
+                    temp.data[3] = avg[3];
                 }
                 else {
                     temp.data[0] = avg[0];
@@ -148,3 +171,62 @@ download.addEventListener('click', () => {
     link.click();
 });
 
+monochrome.addEventListener('input', () => {
+    if (monochrome.checked) {
+        palette.checked = false;
+        colorsContainer.style.display = 'none';
+    }
+});
+
+palette.addEventListener('input', () => {
+    if (palette.checked) {
+        monochrome.checked = false;
+        colorsContainer.style.display = 'flex';
+    }
+    else colorsContainer.style.display = 'none';
+})
+
+newColor.addEventListener('change', () => {
+    const color = [Number(`0x${newColor.value.slice(1, 3)}`), Number(`0x${newColor.value.slice(3, 5)}`), Number(`0x${newColor.value.slice(5, 7)}`)];
+    
+    if (!customColors.find((value) => {
+        return value[0] === color[0] && value[1] === color[1] && value[2] === color[2];
+    })) {
+        customColors.push(color);
+        colors.appendChild(createColor(newColor.value, color));
+    }
+    
+});
+
+function createColor(hex, rgb) {
+    const color = document.createElement('div');
+    color.classList.add('color');
+
+    const colorChip = document.createElement('div');
+    colorChip.classList.add('box');
+    colorChip.style.backgroundColor = hex;
+    color.appendChild(colorChip);
+
+    const colorText = document.createElement('p');
+    colorText.innerHTML = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    color.appendChild(colorText);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('delete');
+    deleteButton.innerHTML = "&#10006;";
+    color.appendChild(deleteButton);
+
+    deleteButton.addEventListener('click', () => {
+        const index = customColors.findIndex((value) => {
+            return value[0] === rgb[0] && value[0] === rgb[0] && value[0] === rgb[0];
+        })
+        customColors.splice(index, 1);
+        color.remove();
+    })
+
+    return color;
+}
+
+function distance (one, two) {
+    return Math.sqrt(Math.pow(one[0] - two[0], 2) + Math.pow(one[1] - two[1], 2) + Math.pow(one[2] - two[2], 2));
+}
