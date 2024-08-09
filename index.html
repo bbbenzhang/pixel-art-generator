@@ -30,13 +30,16 @@
                 </div>
 
                 <div id="colors-container" class="colors-container">
-                    <div>
-                        <label for="new-color"> Add Color: </label>
-                        <input id="new-color" type="color" />
-                        <!-- 
-                        <label for="import"> Import Palette</label>
-                        <input id="import" type="file" accept="image/png, image/jpeg">
-                        -->
+                    <div class="color-toolbar">
+                        <div class="color-toolbar-item">
+                            <label for="import"> Import Palette: </label>
+                            <input id="import" type="file" accept="image/png, image/jpeg">
+                        </div>
+                        <div class="color-toolbar-item">
+                            <label for="new-color"> Add Color: </label>
+                            <input id="new-color" type="color" />
+                        </div>
+                        <button id="clear" class="color-toolbar-item"> Clear All </button>
                     </div>
                     
                     <div id="colors" class="colors">
@@ -45,7 +48,8 @@
                 </div>
             </div>
 
-            <canvas id="imageCanvas" class="image-canvas"></canvas>
+            <canvas id="imageCanvas" class="hidden-canvas"></canvas>
+            <canvas id="paletteCanvas" class="hidden-canvas"></canvas>
 
             <div id="rightContainer" class="right-container">
 

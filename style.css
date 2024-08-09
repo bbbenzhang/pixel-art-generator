@@ -28,7 +28,7 @@ html {
     justify-content: center;
 }
 
-.image-canvas {
+.hidden-canvas {
     display: none;
 }
 
@@ -66,12 +66,12 @@ html {
 }
 
 .right-container {
-    margin-left: 100px;
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
+    height: 610px;
+    width: 910px;
 }
 
 .left-container {
@@ -80,7 +80,7 @@ html {
 }
 
 .colors-container {
-    margin-top: 10px;
+    margin-top: 20px;
     display: none;
     flex-direction: column;
 }
@@ -91,6 +91,16 @@ html {
     flex-wrap: wrap;
     margin-top: 10px;
     width: 910px;
+}
+
+.color-toolbar {
+    display: flex;
+    align-items: center;
+}
+
+.color-toolbar-item {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .color {

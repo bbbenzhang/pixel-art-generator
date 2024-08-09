@@ -1,5 +1,5 @@
 const input = document.getElementById('image');
-const preview = document.getElementById('preview');
+const preview = document.getElementById('preview'); // displaying the preview
 const dimensions = document.getElementById('dimensions')
 
 const widthInput = document.getElementById('width');
@@ -8,7 +8,7 @@ const heightInput = document.getElementById('height');
 const generateButton = document.getElementById('generate');
 
 const canvas = document.getElementById('imageCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d'); // keep the full image data on this invisible canvas
 
 const result = document.getElementById('resultCanvas');
 const resultCtx = result.getContext('2d');
@@ -24,6 +24,10 @@ const newColor = document.getElementById('new-color');
 const colors = document.getElementById('colors');
 const colorsContainer = document.getElementById('colors-container');
 const customColors = []
+const importPalette = document.getElementById('import');
+const paletteCanvas = document.getElementById('paletteCanvas');
+const paletteCtx = paletteCanvas.getContext('2d'); // read the colors off the imported palette using this canvas
+const clear = document.getElementById('clear');
 
 const MAX_WIDTH = 900;
 const MAX_HEIGHT = 600;
@@ -196,6 +200,48 @@ newColor.addEventListener('change', () => {
         colors.appendChild(createColor(newColor.value, color));
     }
     
+});
+
+importPalette.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const image = document.createElement('img');
+            image.src = e.target.result;
+
+            image.onload = () => {
+                if (image.width * image.height >= 256) {
+                    alert("Palette too large!");
+                    importPalette.value = "";
+                }
+                else {
+                    paletteCanvas.width = image.width;
+                    paletteCanvas.height = image.height;
+                    paletteCtx.drawImage(image, 0, 0);
+
+                    const paletteData = paletteCtx.getImageData(0, 0, paletteCanvas.width, paletteCanvas.height);
+                    if (paletteData) {
+                        const data = paletteData.data;
+                        for (let i = 0; i < data.length; i += 4) {
+                            if (!customColors.find((value) => {
+                                return value[0] === data[i] && value[1] === data[i + 1] && value[2] === data[i + 2];
+                            })) {
+                                customColors.push([data[i], data[i + 1], data[i + 2]]);
+                                colors.appendChild(createColor(`rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`, [data[i], data[i + 1], data[i + 2]]));
+                            }
+                        }
+                    }
+                }            
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+clear.addEventListener('click', () => {
+    customColors.splice(0, customColors.length);
+    colors.innerHTML = '';
 });
 
 function createColor(hex, rgb) {
